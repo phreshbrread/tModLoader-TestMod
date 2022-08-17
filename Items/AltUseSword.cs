@@ -28,17 +28,39 @@ namespace TestMod.Items
             Item.autoReuse = true;
         }
 
-        public override bool AltFunctionUse(Player player)//You use this to allow the item to be right clicked
+        public override bool AltFunctionUse(Player player) // You use this to allow the Item to be right clicked
         {
             return true;
         }
 
-        public override void AddRecipes()
+        public override bool CanUseItem(Player player)
         {
-            Recipe recipe = CreateRecipe();
-            recipe.AddIngredient(ItemID.DirtBlock, 10);
-            recipe.AddTile(TileID.WorkBenches);
-            recipe.Register();
+            if (player.altFunctionUse == 2) // Set what happens on right click
+            {
+                Item.useStyle = ItemUseStyleID.Stabbing;
+                Item.useTime = 20;
+                Item.useAnimation = 20;
+                Item.damage = 50;
+                Item.shoot = ProjectileID.Bee;
+            }
+            else
+            {
+                Item.useStyle = ItemUseStyleID.SwingThrow;
+                Item.useTime = 40;
+                Item.useAnimation = 40;
+                Item.damage = 100;
+                Item.shoot = ProjectileID.None;
+            }
+            return base.CanUseItem(player);
         }
     }
+
+    public override void AddRecipes()
+    {
+        Recipe recipe = CreateRecipe();
+        recipe.AddIngredient(ItemID.DirtBlock, 10);
+        recipe.AddTile(TileID.WorkBenches);
+        recipe.Register();
+    }
+}
 }
