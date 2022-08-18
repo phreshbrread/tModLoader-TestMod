@@ -1,20 +1,21 @@
+using TestMod.Content.Projectiles;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace TestMod.Items
+namespace TestMod.Content.Items
 {
-    public class AltUseSword : ModItem
+    public class RightClickSword : ModItem
     {
         public override void SetStaticDefaults()
         {
-            // DisplayName.SetDefault("AltUseSword"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
+            // DisplayName.SetDefault("RightClickSword"); // By default, capitalization in classnames will add spaces to the display name. You can customize the display name here by uncommenting this line.
             Tooltip.SetDefault("This is mad as.");
         }
 
         public override void SetDefaults()
         {
-            Item.damage = 50;
+            Item.damage = 100;
             Item.DamageType = DamageClass.Melee;
             Item.width = 40;
             Item.height = 40;
@@ -37,30 +38,30 @@ namespace TestMod.Items
         {
             if (player.altFunctionUse == 2) // Set what happens on right click
             {
-                Item.useStyle = ItemUseStyleID.Stabbing;
-                Item.useTime = 20;
+                Item.useStyle = ItemUseStyleID.Thrust;
+                Item.useTime = 10;
                 Item.useAnimation = 20;
-                Item.damage = 50;
-                Item.shoot = ProjectileID.Bee;
+                Item.damage = 80;
+                Item.shoot = ModContent.ProjectileType<RightClickSwordProjectile>();
+                Item.autoReuse = true;
             }
             else
             {
-                Item.useStyle = ItemUseStyleID.SwingThrow;
+                Item.useStyle = ItemUseStyleID.Swing;
                 Item.useTime = 40;
                 Item.useAnimation = 40;
-                Item.damage = 100;
                 Item.shoot = ProjectileID.None;
             }
             return base.CanUseItem(player);
         }
-    }
 
-    public override void AddRecipes()
-    {
-        Recipe recipe = CreateRecipe();
-        recipe.AddIngredient(ItemID.DirtBlock, 10);
-        recipe.AddTile(TileID.WorkBenches);
-        recipe.Register();
+
+        public override void AddRecipes()
+        {
+            Recipe recipe = CreateRecipe();
+            recipe.AddIngredient(ItemID.DirtBlock, 10);
+            recipe.AddTile(TileID.WorkBenches);
+            recipe.Register();
+        }
     }
-}
 }
